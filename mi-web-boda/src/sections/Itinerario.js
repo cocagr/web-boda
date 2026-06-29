@@ -24,7 +24,7 @@ export default function Itinerario() {
           
           <Text style={styles.time}>13:00h - Ceremonia religiosa</Text>
           <Text style={styles.desc}>Parroquia de Nuestra Señora de la Asunción y Ángeles, en Cabra.</Text>
-          {renderPin('C. Mayor, 2, 14940 Cabra, Córdoba', 'https://maps.app.goo.gl/tu-link-aqui')}
+          {renderPin('C. Mayor, 2, 14940 Cabra, Córdoba', 'https://share.google/OpHZWHlcGV173a2Pu')}
         </View>
         <Image source={require('../assets/Itinerario2.jpeg')} style={styles.image} resizeMode="contain" />
       </View>
@@ -38,7 +38,7 @@ export default function Itinerario() {
           
           <Text style={styles.time}>14:30h - Celebración</Text>
           <Text style={styles.desc}>La celebración tendrá lugar en Cortijo de Vargas.</Text>
-          {renderPin('Cortijo de Vargas, Diseminados, 138, 14940 Cabra, Córdoba', 'https://maps.app.goo.gl/tu-link-aqui')}
+          {renderPin('Cortijo de Vargas, Diseminados, 138, 14940 Cabra, Córdoba', 'https://share.google/eand9PtewhBYRJnY7')}
           
           <Text style={[styles.desc, { fontWeight: 'bold', marginTop: 10 }]}>
             Servicio de autobús de vuelta hacia Priego de Córdoba y Cabra. Horario y paradas aún por determinar.

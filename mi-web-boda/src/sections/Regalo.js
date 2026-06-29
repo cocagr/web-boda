@@ -33,7 +33,6 @@ export default function Regalo() {
         <Text style={styles.quoteText}>
           «Cada uno debe dar según lo que haya decidido en su corazón, no de mala gana ni por obligación, porque Dios ama al que da con alegría»
         </Text>
-        <Text style={styles.quoteAuthor}>2 Corintios 9:7</Text>
       </View>
 
       {/* Tarjeta con el Número de Cuenta */}
