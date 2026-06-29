@@ -21,7 +21,7 @@ export default function Contacto() {
 
       {/* Aquí insertamos la imagen */}
       <Image 
-        source={require('../../assets/Contacto.jpeg')} 
+        source={require('../assets/Contacto.jpeg')} 
         style={styles.heroImage}
         resizeMode="contain"
       />
