@@ -48,28 +48,6 @@ export default function Contacto() {
           </View>
         </View>
 
-        {/* Separador visual para móvil/escritorio */}
-        {!isMobile && !isTablet && <View style={styles.verticalDivider} />}
-
-        {/* BLOQUE DERECHO: Formulario rápido */}
-        <View style={[styles.formBlock, { width: isMobile || isTablet ? '100%' : '45%', marginTop: isMobile || isTablet ? 40 : 0 }]}>
-          <Text style={styles.blockTitle}>ENVIAR UN MENSAJE</Text>
-          
-          <CustomInput
-            placeholder="Escribe aquí tu consulta de forma detallada..."
-            value={duda}
-            onChangeText={setDuda}
-            multiline
-            numberOfLines={4}
-          />
-          
-          <CustomButton
-            title="Enviar consulta"
-            onPress={enviarDuda}
-            style={styles.submitBtn}
-          />
-        </View>
-
       </View>
     </View>
   );
