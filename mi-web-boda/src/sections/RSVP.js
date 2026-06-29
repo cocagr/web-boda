@@ -1,8 +1,4 @@
 // src/sections/RSVP.js
-// Busca la línea del título en RSVP.js y cámbiala un momento para testear:
-<Text style={[styles.title, { fontSize: isMobile ? 32 : 40 }]}>
-  CONFIRMA TU ASISTENCIA (V2)
-</Text>
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
