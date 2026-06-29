@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Image, useWindowDimensions } from 'react-native';
-import { COLORS } from '../styles/theme';
+import { View, Text, StyleSheet, Image, useWindowDimensions } from 'react-native';
+import { COLORS, FONTS } from '../styles/theme';
 
 export default function Itinerario() {
   const { width } = useWindowDimensions();
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>ITINERARIO</Text>
+      
       <Image 
         source={require('../assets/Itinerario.png')}
         style={[styles.image, { width: Math.min(width * 0.9, 1000) }]} 
@@ -19,13 +21,21 @@ export default function Itinerario() {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: COLORS.bgCremaAlt, // Usando tu color de fondo definido
+    backgroundColor: COLORS.bgCremaAlt,
     paddingVertical: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title: {
+    fontFamily: FONTS.titulo,
+    fontSize: 40,
+    color: COLORS.negroSuave,
+    letterSpacing: 2,
+    marginBottom: 40,
+    textAlign: 'center',
+  },
   image: {
-    aspectRatio: 1.5, // Ajusta esto según las proporciones reales de tu archivo
+    aspectRatio: 1.5,
     maxWidth: '100%',
   },
 });
