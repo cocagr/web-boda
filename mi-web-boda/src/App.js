@@ -2,11 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { COLORS } from './styles/theme';
-
-// Importación del menú de navegación
 import Navbar from './components/Navbar';
-
-// Importación de todas las secciones modulares
 import Regalo from './sections/Regalo';
 import Hero from './sections/Hero';
 import Bienvenida from './sections/Bienvenida';
@@ -18,10 +14,6 @@ import Contacto from './sections/Contacto';
 export default function App() {
   const scrollViewRef = useRef(null);
   const [activeSection, setActiveSection] = useState('bienvenida');
-
-  /**
-   * Función que desplaza la pantalla usando el método nativo del navegador
-   */
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
 
