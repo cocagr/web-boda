@@ -1,8 +1,9 @@
 // src/sections/Autobus.js
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform, TextInput } from 'react-native';
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
 import CustomButton from '../components/CustomButton';
+import { supabase } from '../config/supabaseClient'; 
 
 export default function Autobus() {
   const { width } = useWindowDimensions();
@@ -11,11 +12,54 @@ export default function Autobus() {
   const isTablet = deviceType === 'tablet';
 
   // Estados para el flujo interactivo
+  const [nombreCompleto, setNombreCompleto] = useState(''); // REQUISITO: Saber quién reserva
   const [alojamiento, setAlojamiento] = useState(null); // 'priego', 'cabra', 'otro'
   const [usaraBus, setUsaraBus] = useState(null); // 'si', 'no'
+  const [cargando, setCargando] = useState(false); // Feedback visual de envío
 
-  const handleConfirmar = () => {
-    alert('Preferencia de transporte guardada correctamente.');
+  // EFECTO PARA RECUPERAR EL NOMBRE GUARDADO
+  useEffect(() => {
+    const nombreGuardado = localStorage.getItem('nombreInvitado');
+    if (nombreGuardado) {
+      setNombreCompleto(nombreGuardado);
+    }
+  }, []);
+
+  // 2. FUNCIÓN DE ENVÍO A SUPABASE (Tabla: asistencias)
+  const handleConfirmar = async () => {
+    if (!nombreCompleto.trim()) {
+      alert('Por favor, introduce tu nombre y apellidos para poder registrar tu preferencia.');
+      return;
+    }
+
+    setCargando(true);
+
+    try {
+      // Mapeamos los estados a las columnas unificadas de la tabla 'asistencias'
+      const payload = {
+        nombre: nombreCompleto.trim(), // Ajusta 'nombre' si tu columna se llama de otra forma
+        alojamiento: alojamiento, // 'priego', 'cabra' o 'otro'
+        usa_autobus: alojamiento === 'otro' ? false : usaraBus === 'si', // Boolean
+      };
+
+      const { error } = await supabase
+        .from('asistencias') // 👈 Apuntando a tu tabla principal en plural
+        .insert([payload]);
+
+      if (error) throw error;
+
+      alert('¡Preferencia de transporte guardada correctamente! Muchas gracias.');
+      
+      // Limpiamos el formulario tras el éxito
+      setAlojamiento(null);
+      setUsaraBus(null);
+
+    } catch (error) {
+      console.error('Error enviando a Supabase:', error.message);
+      alert('Hubo un error al guardar tu selección. Por favor, inténtalo de nuevo.');
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
@@ -28,7 +72,7 @@ export default function Autobus() {
         Queremos facilitar vuestros traslados durante el gran día. Selecciona dónde vas a alojarte para conocer y reservar tus rutas disponibles.
       </Text>
 
-      {/* NUEVO BLOQUE: Recomendación de alojamiento y Hoteles bloqueados */}
+      {/* BLOQUE: Recomendación de alojamiento y Hoteles bloqueados */}
       <View style={[styles.infoAlojamientoCard, { width: isMobile ? '100%' : isTablet ? '85%' : 700 }]}>
         <Text style={styles.infoTextPrincipal}>
           En cuanto al alojamiento, recomendamos la estancia en <Text style={styles.bold}>Cabra</Text> o <Text style={styles.bold}>Priego de Córdoba</Text>, ya que será desde donde haya servicio de autobús de ida y vuelta.
@@ -61,9 +105,21 @@ export default function Autobus() {
       </View>
 
 
-      {/* BLOQUE INTERACTIVO: ¿Dónde te alojas? */}
+      {/* BLOQUE INTERACTIVO: Formulario */}
       <View style={[styles.card, { width: isMobile ? '100%' : isTablet ? '85%' : 700 }]}>
-        <Text style={styles.label}>¿DÓNDE TE ALOJAS?</Text>
+        
+        {/* Campo de texto para Nombre y Apellidos */}
+        <Text style={styles.label}>NOMBRE Y APELLIDOS</Text>
+        <TextInput
+          style={[styles.input, !!nombreCompleto && styles.inputDisabled]}
+          placeholder="Escribe tu nombre completo"
+          placeholderTextColor="#A09B90"
+          value={nombreCompleto}
+          onChangeText={setNombreCompleto}
+          editable={!nombreCompleto}
+        />
+
+        <Text style={[styles.label, { marginTop: 25 }]}>¿DÓNDE TE ALOJAS?</Text>
         
         <View style={[styles.optionsRow, { flexDirection: isMobile ? 'column' : 'row' }]}>
           <TouchableOpacity
@@ -164,8 +220,9 @@ export default function Autobus() {
         {/* BOTÓN FINAL DE CONFIRMACIÓN */}
         {alojamiento && (usaraBus || alojamiento === 'otro') && (
           <CustomButton
-            title="Confirmar preferencia"
+            title={cargando ? "Guardando..." : "Confirmar preferencia"}
             onPress={handleConfirmar}
+            disabled={cargando}
             style={styles.confirmBtn}
           />
         )}
@@ -290,6 +347,22 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
     marginBottom: 16,
     fontWeight: '600',
+  },
+  input: {
+    width: '100%',
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#E0DCD5',
+    borderRadius: 4,
+    paddingHorizontal: 16,
+    fontFamily: FONTS.cuerpo,
+    fontSize: 14,
+    color: COLORS.negroSuave,
+    backgroundColor: '#FAF8F5',
+  },
+  inputDisabled: {
+    backgroundColor: '#F1EDE6',
+    color: '#888',
   },
   optionsRow: {
     width: '100%',

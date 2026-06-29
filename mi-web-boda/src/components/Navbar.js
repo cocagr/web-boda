@@ -12,7 +12,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
     { id: 'bienvenida', label: '¡BIENVENIDOS!' },
     { id: 'fecha', label: 'FECHA Y LUGAR' },
     { id: 'rsvp', label: 'CONFIRMA TU ASISTENCIA' },
-    { id: 'regalo', label: 'REGALO'},
+    { id: 'regalo', label: '2 CORINTIOS 9:7'},
     { id: 'autobus', label: 'ALOJAMIENTO Y AUTOBÚS' },
   ];
 

@@ -25,7 +25,7 @@ export default function Regalo() {
     <View style={styles.container}>
       {/* TÍTULO DE LA SECCIÓN */}
       <Text style={[styles.title, { fontSize: isMobile ? 32 : 40 }]}>
-        REGALO
+        2 CORINTIOS 9:7
       </Text>
 
       {/* Cita Bíblica Elegante */}

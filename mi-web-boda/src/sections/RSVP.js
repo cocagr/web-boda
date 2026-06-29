@@ -4,8 +4,6 @@ import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
-
-// Importamos el cliente de Supabase que acabas de crear
 import { supabase } from '../config/supabaseClient'; 
 
 export default function RSVP() {
@@ -59,6 +57,9 @@ export default function RSVP() {
         ]);
 
       if (error) throw error;
+
+      // GUARDAMOS EL NOMBRE EN EL NAVEGADOR PARA EL FORMULARIO DE AUTOBÚS
+      localStorage.setItem('nombreInvitado', nombre.trim());
 
       setEnviado(true);
     } catch (error) {
@@ -318,6 +319,7 @@ export default function RSVP() {
 }
 
 const styles = StyleSheet.create({
+  
   container: {
     width: '100%',
     backgroundColor: COLORS.bgCrema,
