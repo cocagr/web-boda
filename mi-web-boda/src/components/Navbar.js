@@ -13,7 +13,6 @@ export default function Navbar({ activeSection, scrollToSection }) {
     { id: 'fecha', label: 'FECHA Y LUGAR' },
     { id: 'rsvp', label: 'CONFIRMA TU ASISTENCIA' },
     { id: 'regalo', label: '2 CORINTIOS 9:7'},
-    { id: 'autobus', label: 'ALOJAMIENTO Y AUTOBÚS' },
   ];
 
   if (deviceType === 'mobile' || deviceType === 'tablet') {
