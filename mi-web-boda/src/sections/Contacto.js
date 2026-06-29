@@ -35,15 +35,15 @@ export default function Contacto() {
           
           <View style={styles.contactCard}>
             <Text style={styles.novioName}>Laura</Text>
-            <TouchableOpacity onPress={() => Linking.openURL('tel:+34600000000')}>
-              <Text style={styles.phoneText}>+34 600 00 00 00</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('tel:+34647839020')}>
+              <Text style={styles.phoneText}>+34 647 83 90 20</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.contactCard}>
             <Text style={styles.novioName}>Leandro</Text>
-            <TouchableOpacity onPress={() => Linking.openURL('tel:+34611111111')}>
-              <Text style={styles.phoneText}>+34 611 11 11 11</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('tel:+34615946605')}>
+              <Text style={styles.phoneText}>+34 615 94 66 05</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -7,8 +7,7 @@ import Regalo from './sections/Regalo';
 import Hero from './sections/Hero';
 import Bienvenida from './sections/Bienvenida';
 import FechaLugar from './sections/FechaLugar';
-import RSVP from './sections/RSVPGeneral';
-import LibroVisitas from './sections/LibroVisitas';
+import RSVPGeneral from './sections/RSVPGeneral';
 import Contacto from './sections/Contacto';
 
 export default function App() {
@@ -65,10 +64,6 @@ export default function App() {
 
         <View id="regalo" style={{ scrollMarginTop: 75 }}>
           <Regalo />
-        </View>
-
-        <View id="libroVisitas" style={{ scrollMarginTop: 75 }}>
-          <LibroVisitas />
         </View>
 
         <View id="contacto" style={{ scrollMarginTop: 75 }}>
