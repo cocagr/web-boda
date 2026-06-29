@@ -13,7 +13,7 @@ export default function Contacto() {
   return (
     <View style={styles.container}>
       <Text style={[styles.title, { fontSize: isMobile ? 32 : 40 }]}>
-        ¿TIENES ALGUNA DUDA?
+        OS ESPERAMOS!
       </Text>
       <Text style={styles.subtitle}>
         Si necesitas consultarnos algo sobre los hoteles, tienes algún problema con el transporte o cualquier otra duda, estamos a tu total disposición.

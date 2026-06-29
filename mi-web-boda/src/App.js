@@ -6,9 +6,10 @@ import Navbar from './components/Navbar';
 import Regalo from './sections/Regalo';
 import Hero from './sections/Hero';
 import Bienvenida from './sections/Bienvenida';
-import FechaLugar from './sections/FechaLugar';
+import FechaLugar from './sections/Itinerario';
 import RSVPGeneral from './sections/RSVPGeneral';
 import Contacto from './sections/Contacto';
+import Itinerario from './sections/Itinerario';
 
 export default function App() {
   const scrollViewRef = useRef(null);
@@ -52,6 +53,10 @@ export default function App() {
 
         <View id="bienvenida" style={{ scrollMarginTop: 75 }}>
           <Bienvenida />
+        </View>
+
+        <View id="itinerario" style={{ scrollMarginTop: 75 }}>
+          <Itinerario />
         </View>
 
         <View id="rsvp" style={{ scrollMarginTop: 75 }}>

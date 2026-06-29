@@ -10,6 +10,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
 
   const menuItems = [
     { id: 'bienvenida', label: '¡BIENVENIDOS!' },
+    { id: 'itinerario', label: 'ITINERARIO' },
     { id: 'rsvp', label: 'CONFIRMA TU ASISTENCIA' },
     { id: 'regalo', label: '2 CORINTIOS 9:7'},
   ];
