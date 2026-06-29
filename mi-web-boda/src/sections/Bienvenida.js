@@ -30,15 +30,23 @@ export default function Bienvenida() {
       {/* Contenedor del Mensaje */}
       <View style={[styles.textContainer, { maxWidth: isMobile ? '90%' : 650 }]}>
         <Text style={[styles.title, { fontSize: isMobile ? 28 : 36 }]}>
-          ¡Bienvenidos a nuestra Boda!
+          En septiembre NOS CASAMOS!
         </Text>
         
         <Text style={[styles.bodyText, { fontSize: isMobile ? 15 : 17 }]}>
-          Hay momentos en la vida que ya son especiales por sí solos, pero compartirlos con las personas que más queremos los hace inolvidables. 
+          ¡Estamos super felices de poder compartir contigo el día de nuestra boda!
         </Text>
         
         <Text style={[styles.bodyText, { fontSize: isMobile ? 15 : 17, marginTop: 15 }]}>
-          Estamos muy felices de dar forma a este día y nos encantaría que forméis parte de nuestra historia en este entorno tan nuestro. ¡Os esperamos con los brazos abiertos!
+          Mientras llega el día hemos creado esta web con un montón de secciones para que estés al día de todo y para compartir la información más importante para el evento.
+        </Text>
+
+        <Text style={[styles.bodyText, { fontSize: isMobile ? 15 : 17, marginTop: 15 }]}>
+          Confírmanos tu asistencia lo antes posible, así organizarlo todo nos será mucho más fácil.
+        </Text>
+
+        <Text style={[styles.bodyText, { fontSize: isMobile ? 15 : 17, marginTop: 15 }]}>
+          Nos vemos muy pronto, muchos besos!
         </Text>
       </View>
 
