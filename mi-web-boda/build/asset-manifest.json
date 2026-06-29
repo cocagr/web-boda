@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/static/js/main.c617c57b.js",
+    "main.js": "/static/js/main.1c6b5f52.js",
     "static/media/ilustracion-hero.jpg": "/static/media/ilustracion-hero.2134cfb25348e1516b9b.jpg",
     "static/media/olivo-arriba.png": "/static/media/olivo-arriba.4dedbd2f80d3d9524767.png",
     "static/media/olivo-abajo.png": "/static/media/olivo-abajo.5a032f7c4581cc0fbf92.png",
     "index.html": "/index.html",
-    "main.c617c57b.js.map": "/static/js/main.c617c57b.js.map"
+    "main.1c6b5f52.js.map": "/static/js/main.1c6b5f52.js.map"
   },
   "entrypoints": [
-    "static/js/main.c617c57b.js"
+    "static/js/main.1c6b5f52.js"
   ]
 }
