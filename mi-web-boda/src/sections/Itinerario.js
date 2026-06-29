@@ -8,7 +8,7 @@ export default function Itinerario() {
   return (
     <View style={styles.container}>
       <Image 
-        source={require('../../assets/Itinerario.png')}
+        source={require('../assets/Itinerario.png')}
         style={[styles.image, { width: Math.min(width * 0.9, 1000) }]} 
         resizeMode="contain"
       />
