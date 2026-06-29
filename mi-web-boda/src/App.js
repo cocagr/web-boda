@@ -54,10 +54,6 @@ export default function App() {
           <Bienvenida />
         </View>
 
-        <View id="fecha" style={{ scrollMarginTop: 75 }}>
-          <FechaLugar />
-        </View>
-
         <View id="rsvp" style={{ scrollMarginTop: 75 }}>
           <RSVPGeneral />
         </View>
