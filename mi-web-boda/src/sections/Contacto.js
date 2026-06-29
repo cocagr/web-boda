@@ -26,12 +26,26 @@ export default function Contacto() {
         resizeMode="contain"
       />
 
-      <View style={[styles.contentLayout, { flexDirection: isMobile || isTablet ? 'column' : 'row', alignItems: 'center', justifyContent: 'center' }]}>
-        {/* El resto de tu código de contactos se mantiene igual */}
+       <View style={[styles.contentLayout, { flexDirection: isMobile || isTablet ? 'column' : 'row', alignItems: 'center', justifyContent: 'center' }]}>
+        
         <View style={[styles.infoBlock, { width: isMobile || isTablet ? '100%' : '400px' }]}>
           <Text style={styles.blockTitle}>CONTACTO DIRECTO</Text>
-          {/* ... tarjetas de contacto ... */}
+          
+          <View style={styles.contactCard}>
+            <Text style={styles.novioName}>Laura</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('tel:+34647839020')}>
+              <Text style={styles.phoneText}>+34 647 83 90 20</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.contactCard}>
+            <Text style={styles.novioName}>Leandro</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('tel:+34615946605')}>
+              <Text style={styles.phoneText}>+34 615 94 66 05</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+
       </View>
     </View>
   );
