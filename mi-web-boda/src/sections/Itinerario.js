@@ -19,11 +19,11 @@ export default function Itinerario() {
       {/* BLOQUE 1: Texto - Imagen */}
       <View style={[styles.section, { flexDirection: isMobile ? 'column' : 'row' }]}>
         <View style={styles.textContainer}>
-          <Text style={styles.time}>12:00h - Servicio de Autobús</Text>
-          <Text style={styles.desc}>Desde Priego de Córdoba. Se habilitará un servicio de traslado con destino a la ceremonia. Punto de salida pendiente de confirmación.</Text>
+          <Text style={styles.time}>12:00h - Servicio de Autobús desde Priego de Córdoba</Text>
+          <Text style={styles.desc}>Para aquellos invitados alojados en Priego de Córdoba, se habilitará un servicio de traslado en autobús con destino a la ceremonia a las 12:00h. El punto exacto de salida está aún pendiente de confirmación.</Text>
           
-          <Text style={styles.time}>13:00h - Ceremonia religiosa</Text>
-          <Text style={styles.desc}>Parroquia de Nuestra Señora de la Asunción y Ángeles, en Cabra.</Text>
+          <Text style={styles.time}>13:00h- Ceremonia religiosa</Text>
+          <Text style={styles.desc}>La ceremonia comenzará a las 13:00h en la Parroquia de Nuestra Señora de la Asunción y Ángeles, en Cabra.</Text>
           {renderPin('C. Mayor, 2, 14940 Cabra, Córdoba', 'https://maps.app.goo.gl/JVk8vm8CA84LcwAr8')}
         </View>
         <Image source={require('../assets/Itinerario2.jpeg')} style={styles.image} resizeMode="contain" />
@@ -33,8 +33,8 @@ export default function Itinerario() {
       <View style={[styles.section, { flexDirection: isMobile ? 'column-reverse' : 'row' }]}>
         <Image source={require('../assets/Itinerario1.jpeg')} style={styles.image} resizeMode="contain" />
         <View style={styles.textContainer}>
-          <Text style={styles.time}>14:00h - Traslado</Text>
-          <Text style={styles.desc}>Tras la ceremonia, los autobuses recogerán a los invitados junto a la parroquia hacia la celebración.</Text>
+          <Text style={styles.time}>14:00h- Traslado al lugar de la celebración</Text>
+          <Text style={styles.desc}>Tras la finalización del oficio religioso, los autobuses recogerán a los invitados junto a la propia parroquia para proceder al traslado conjunto hacia el lugar de la celebración.</Text>
           
           <Text style={styles.time}>14:30h - Celebración</Text>
           <Text style={styles.desc}>La celebración tendrá lugar en Cortijo de Vargas.</Text>
