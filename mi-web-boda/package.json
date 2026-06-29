@@ -10,6 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.108.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "^0.72.0",

@@ -1,9 +1,16 @@
 // src/sections/RSVP.js
+// Busca la línea del título en RSVP.js y cámbiala un momento para testear:
+<Text style={[styles.title, { fontSize: isMobile ? 32 : 40 }]}>
+  CONFIRMA TU ASISTENCIA (V2)
+</Text>
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Platform, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
+
+// Importamos el cliente de Supabase que acabas de crear
+import { supabase } from '../config/supabaseClient'; 
 
 export default function RSVP() {
   const { width } = useWindowDimensions();
@@ -12,28 +19,73 @@ export default function RSVP() {
 
   // Estados del formulario (Invitado Principal)
   const [nombre, setNombre] = useState('');
-  const [asistencia, setAsistencia] = useState(null); // 'si' o 'no'
-  const [menuPrincipal, setMenuPrincipal] = useState(null); // 'lubina' o 'solomillo'
+  const [asistencia, setAsistencia] = useState(null); 
+  const [menuPrincipal, setMenuPrincipal] = useState(null); 
   const [alergiasPrincipal, setAlergiasPrincipal] = useState('');
   
   // Estados para el acompañante
-  const [tieneAcompanante, setTieneAcompanante] = useState(null); // 'si' o 'no'
+  const [tieneAcompanante, setTieneAcompanante] = useState(null); 
   const [nombreAcompanante, setNombreAcompanante] = useState('');
-  const [menuAcompanante, setMenuAcompanante] = useState(null); // 'lubina' o 'solomillo'
+  const [menuAcompanante, setMenuAcompanante] = useState(null); 
   const [alergiasAcompanante, setAlergiasAcompanante] = useState('');
 
-  const handleEnviar = () => {
-    let textoAlerta = `Gracias ${nombre || 'por tu respuesta'}. Se ha enviado tu confirmación.`;
-    if (asistencia === 'si') {
-      textoAlerta += `\nMenú: ${menuPrincipal === 'lubina' ? 'Lubina' : 'Solomillo de ternera'}.`;
-      if (alergiasPrincipal) textoAlerta += ` Alergias: ${alergiasPrincipal}.`;
+  // Estados de carga (mientras sube a la BD) y éxito
+  const [cargando, setCargando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
+    const handleEnviar = async () => {
+    if (!nombre.trim()) {
+      alert('Por favor, introduce tu nombre completo.');
+      return;
     }
-    if (asistencia === 'si' && tieneAcompanante === 'si' && nombreAcompanante) {
-      textoAlerta += `\n\nAcompañante: ${nombreAcompanante}\nMenú: ${menuAcompanante === 'lubina' ? 'Lubina' : 'Solomillo de ternera'}.`;
-      if (alergiasAcompanante) textoAlerta += ` Alergias: ${alergiasAcompanante}.`;
+    if (!asistencia) {
+      alert('Por favor, indica si podrás acompañarnos o no.');
+      return;
     }
-    alert(textoAlerta);
+
+    setCargando(true);
+
+    try {
+      // Insertamos los datos mapeando correctamente los nombres de las variables en español
+      const { error } = await supabase
+        .from('asistencias')
+        .insert([
+          {
+            nombre: nombre.trim(),
+            asistencia: asistencia,
+            menu_principal: asistencia === 'si' ? menuPrincipal : null,
+            alergias_principal: asistencia === 'si' ? alergiasPrincipal.trim() : null,
+            tiene_acompanante: asistencia === 'si' ? tieneAcompanante : null,
+            nombre_acompanante: (asistencia === 'si' && tieneAcompanante === 'si') ? nombreAcompanante.trim() : null,
+            menu_acompanante: (asistencia === 'si' && tieneAcompanante === 'si') ? menuAcompanante : null,
+            alergias_acompanante: (asistencia === 'si' && tieneAcompanante === 'si') ? alergiasAcompanante.trim() : null,
+          }
+        ]);
+
+      if (error) throw error;
+
+      setEnviado(true);
+    } catch (error) {
+      console.error('Error al enviar la asistencia:', error.message);
+      alert('Hubo un problema al enviar tu respuesta. Por favor, inténtalo de nuevo.');
+    } finally {
+      setCargando(false);
+    }
   };
+
+  // Pantalla de agradecimiento que se muestra tras confirmar con éxito
+  if (enviado) {
+    return (
+      <View style={styles.container}>
+        <View style={[styles.formCard, { width: isMobile ? '100%' : 650, alignItems: 'center', paddingVertical: 60 }]}>
+          <Text style={[styles.title, { fontSize: 28, color: COLORS.verdeOlivo }]}>¡MUCHAS GRACIAS!</Text>
+          <Text style={[styles.subtitle, { marginBottom: 0 }]}>
+            Tu respuesta ha sido registrada correctamente. {asistencia === 'si' ? '¡Nos vemos muy pronto en la celebración!' : 'Lamentamos que no puedas venir, te echaremos de menos.'}
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -47,19 +99,21 @@ export default function RSVP() {
 
       <View style={[styles.formCard, { width: isMobile ? '100%' : 650 }]}>
         
-        {/* Campo: Nombre completo del invitado principal */}
+        {/* Nombre completo */}
         <CustomInput
           label="Nombre y Apellidos"
           placeholder="Escribe tu nombre completo"
           value={nombre}
           onChangeText={setNombre}
+          editable={!cargando}
         />
 
-        {/* Campo: Selector de Asistencia */}
+        {/* Selector: ¿Asiste? */}
         <View style={styles.selectorContainer}>
           <Text style={styles.label}>¿PODRÁS ACOMPAÑARNOS?</Text>
           <View style={[styles.optionsRow, { flexDirection: isMobile ? 'column' : 'row' }]}>
             <TouchableOpacity
+              disabled={cargando}
               activeOpacity={0.8}
               onPress={() => setAsistencia('si')}
               style={[
@@ -74,6 +128,7 @@ export default function RSVP() {
             </TouchableOpacity>
 
             <TouchableOpacity
+              disabled={cargando}
               activeOpacity={0.8}
               onPress={() => {
                 setAsistencia('no');
@@ -97,13 +152,14 @@ export default function RSVP() {
           </View>
         </View>
 
-        {/* CONDICIONAL: Elección de menú y alergias del Invitado Principal si asiste */}
+        {/* Campos condicionales del menú del invitado principal */}
         {asistencia === 'si' && (
           <View style={styles.seccionComensal}>
             <View style={styles.selectorContainer}>
               <Text style={styles.label}>EN EL MENÚ PREFERIRÉ:</Text>
               <View style={[styles.optionsRow, { flexDirection: isMobile ? 'column' : 'row' }]}>
                 <TouchableOpacity
+                  disabled={cargando}
                   activeOpacity={0.8}
                   onPress={() => setMenuPrincipal('lubina')}
                   style={[
@@ -118,6 +174,7 @@ export default function RSVP() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                  disabled={cargando}
                   activeOpacity={0.8}
                   onPress={() => setMenuPrincipal('solomillo')}
                   style={[
@@ -138,16 +195,18 @@ export default function RSVP() {
               placeholder="Ej: Celíaco, vegetariano, alergia a los frutos secos..."
               value={alergiasPrincipal}
               onChangeText={setAlergiasPrincipal}
+              editable={!cargando}
             />
           </View>
         )}
 
-        {/* CONDICIONAL: Preguntar por acompañante si el invitado principal dice que SÍ asiste */}
+        {/* Pregunta por el acompañante */}
         {asistencia === 'si' && (
           <View style={[styles.selectorContainer, { marginTop: 15 }]}>
             <Text style={styles.label}>¿VIENES CON ACOMPAÑANTE?</Text>
             <View style={[styles.optionsRow, { flexDirection: isMobile ? 'column' : 'row' }]}>
               <TouchableOpacity
+                disabled={cargando}
                 activeOpacity={0.8}
                 onPress={() => setTieneAcompanante('si')}
                 style={[
@@ -162,6 +221,7 @@ export default function RSVP() {
               </TouchableOpacity>
 
               <TouchableOpacity
+                disabled={cargando}
                 activeOpacity={0.8}
                 onPress={() => {
                   setTieneAcompanante('no');
@@ -183,7 +243,7 @@ export default function RSVP() {
           </View>
         )}
 
-        {/* BLOQUE DINÁMICO: Datos, Menú y Alergias del Acompañante */}
+        {/* Campos condicionales del acompañante */}
         {asistencia === 'si' && tieneAcompanante === 'si' && (
           <View style={styles.animatedField}>
             <CustomInput
@@ -191,12 +251,14 @@ export default function RSVP() {
               placeholder="Escribe el nombre completo de tu acompañante"
               value={nombreAcompanante}
               onChangeText={setNombreAcompanante}
+              editable={!cargando}
             />
 
             <View style={[styles.selectorContainer, { marginTop: 10 }]}>
               <Text style={styles.label}>MI ACOMPAÑANTE PREFERIRÁ EN EL MENÚ:</Text>
               <View style={[styles.optionsRow, { flexDirection: isMobile ? 'column' : 'row' }]}>
                 <TouchableOpacity
+                  disabled={cargando}
                   activeOpacity={0.8}
                   onPress={() => setMenuAcompanante('lubina')}
                   style={[
@@ -211,6 +273,7 @@ export default function RSVP() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                  disabled={cargando}
                   activeOpacity={0.8}
                   onPress={() => setMenuAcompanante('solomillo')}
                   style={[
@@ -231,23 +294,27 @@ export default function RSVP() {
               placeholder="Ej: Intolerante a la lactosa, vegano..."
               value={alergiasAcompanante}
               onChangeText={setAlergiasAcompanante}
+              editable={!cargando}
             />
           </View>
         )}
 
-        {/* Mensaje Informativo de Logística (Niños) */}
         <View style={styles.infoNotaContainer}>
           <Text style={styles.infoNotaText}>
             Debido a motivos logísticos no podemos extender esta invitación a los niños.
           </Text>
         </View>
 
-        {/* Botón de Envío */}
-        <CustomButton
-          title="Enviar Respuesta"
-          onPress={handleEnviar}
-          style={styles.submitBtn}
-        />
+        {/* Botón final con loader integrado */}
+        {cargando ? (
+          <ActivityIndicator size="small" color={COLORS.verdeOlivo} style={{ marginTop: 20 }} />
+        ) : (
+          <CustomButton
+            title="Enviar Respuesta"
+            onPress={handleEnviar}
+            style={styles.submitBtn}
+          />
+        )}
 
       </View>
     </View>
