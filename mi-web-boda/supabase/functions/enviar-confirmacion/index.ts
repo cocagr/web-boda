@@ -14,7 +14,7 @@ serve(async (req) => {
     },
 body: JSON.stringify({
   from: "confirmaciones@bodalaurayleandro.com",
-  to: "tu-correo@outlook.com",
+  to: "bodalaurayleandro@outlook.es",
   subject: `Nueva confirmación: ${record.nombre}`,
   html: `
     <h1>Detalles de la confirmación</h1>
