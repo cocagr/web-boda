@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Linking, Platform } from 'react-native';
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
 import CustomInput from '../components/CustomInput';
-import CustomButton from '../components/CustomButton';
-import React from 'react';
+import CustomButton from '../components/CustomButton';ß
 import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, Linking, Image } from 'react-native';
 
 export default function Contacto() {
