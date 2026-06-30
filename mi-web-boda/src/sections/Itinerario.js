@@ -29,6 +29,9 @@ export default function Itinerario() {
       <View style={[styles.section, { flexDirection: isMobile ? 'column' : 'row' }]}>
         <View style={styles.textContainer}>
           <Text style={styles.time}>12:00h - Servicio de Autobús desde Priego de Córdoba</Text>
+          <Text style={[styles.desc, { fontWeight: 'bold', marginTop: 20, textAlign: 'center', paddingHorizontal: 20 }]}>
+          Los invitados que se alojen en Cabra podrán dirigirse directamente al lugar de la ceremonia
+          </Text>
           <Text style={styles.desc}>Para aquellos invitados alojados en Priego de Córdoba, se habilitará un servicio de traslado en autobús con destino a la ceremonia a las 12:00h. El punto exacto de salida está aún pendiente de confirmación.</Text>
           
           <Text style={styles.time}>13:00h- Ceremonia religiosa</Text>
