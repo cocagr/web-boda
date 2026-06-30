@@ -32,7 +32,6 @@ export default function RSVPGeneral() {
         nombre_acompanante: formData.nombreAcomp, menu_acompanante: formData.menuAcomp,
         alergias_acompanante: formData.alergiasAcomp,
         alojamiento: formData.alojamiento,
-        // Almacena el tipo de trayecto seleccionado o false si no usa
         usa_autobus: formData.alojamiento === 'otro' ? 'no' : formData.usaAutobus
       }]);
       if (error) throw error;
@@ -117,6 +116,11 @@ export default function RSVPGeneral() {
         )}
         
         {cargando ? <ActivityIndicator size="small" /> : <CustomButton title="Confirmar asistencia" onPress={handleEnviar} />}
+        
+        {/* Aviso de niños debajo del botón */}
+        <Text style={styles.avisoNinos}>
+          Debido a motivos logísticos no podemos extender esta invitación a los niños.
+        </Text>
       </View>
     </ScrollView>
   );
@@ -136,5 +140,6 @@ const styles = StyleSheet.create({
   optTextSel: { fontSize: 13, color: COLORS.verdeOlivo, fontWeight: '600', textAlign: 'center' },
   infoAlojamiento: { marginVertical: 20, padding: 15, backgroundColor: '#F9F9F9', borderRadius: 2, borderWidth: 1, borderColor: '#EEE' },
   infoText: { fontSize: 13, color: '#666', marginBottom: 8, lineHeight: 20 },
-  hotelText: { fontSize: 13, fontWeight: '600', color: COLORS.verdeOlivo, marginBottom: 5 }
+  hotelText: { fontSize: 13, fontWeight: '600', color: COLORS.verdeOlivo, marginBottom: 5 },
+  avisoNinos: { fontFamily: FONTS.cuerpo, fontSize: 12, color: '#888', fontStyle: 'italic', textAlign: 'center', marginTop: 25, lineHeight: 18 }
 });
