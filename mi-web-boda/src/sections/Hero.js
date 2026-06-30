@@ -11,25 +11,30 @@ export default function Hero() {
   const isTablet = deviceType === 'tablet';
   const isDesktop = !isMobile && !isTablet;
 
-  // Ajustamos dinámicamente la altura del bloque según la pantalla
+  // Modificamos la altura solo para móviles y tablets.
+  // En escritorio devolvemos 'auto' para que mande el aspect ratio o el ancho total.
   const getIllustrationHeight = () => {
-    if (isMobile) return height * 0.45;  // En móvil ocupa menos vertical para dejar espacio al texto
-    if (isTablet) return height * 0.55;  // En tablet un tamaño intermedio
-    return height * 0.70;                // En escritorio le damos un poco más de margen vertical
+    if (isMobile) return height * 0.45;
+    if (isTablet) return height * 0.55;
+    return 'auto'; 
   };
 
   return (
     <View style={styles.container}>
       
-      {/* Contenedor de la pintura con su máscara difuminada inferior */}
-      <View style={[styles.imageWrapper, { height: getIllustrationHeight() }]}>
+      {/* Contenedor de la pintura */}
+      <View style={[
+        styles.imageWrapper, 
+        { height: getIllustrationHeight() },
+        isDesktop && styles.imageWrapperDesktop // Aplicamos aspecto proporcional en escritorio
+      ]}>
         <Image
           source={require('../assets/ilustracion-hero.jpg')}
-          style={styles.heroImage}
-          // En móvil/tablet cubre el espacio; en escritorio se muestra COMPLETA sin recortes
-          resizeMode={isDesktop ? "contain" : "cover"}
+          style={isDesktop ? styles.heroImageDesktop : styles.heroImage}
+          // En escritorio usamos "cover" porque el contenedor ya tiene la proporción exacta de la imagen
+          resizeMode={isDesktop ? "cover" : "cover"} 
         />
-        {/* Efecto de degradado suave para fundirse con el fondo crema */}
+        {/* Efecto de degradado suave */}
         <View style={styles.gradientFade} />
       </View>
 
@@ -57,7 +62,7 @@ export default function Hero() {
         </Text>
       </View>
 
-      {/* Línea divisoria fina y sutil de diseño */}
+      {/* Línea divisoria */}
       <View style={[styles.divider, { width: isMobile ? '80%' : '60%' }]} />
     </View>
   );
@@ -68,30 +73,44 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: COLORS.bgCrema,
     alignItems: 'center',
-    paddingTop: Platform.OS === 'web' ? 70 : 60, // Espacio reservado para que el Navbar fijo no tape la pintura
+    paddingTop: Platform.OS === 'web' ? 70 : 60,
   },
   imageWrapper: {
     width: '100%',
     position: 'relative',
     overflow: 'hidden',
   },
+  imageWrapperDesktop: {
+    // CAMBIA ESTO según la proporción real de tu pintura (Ancho / Alto).
+    // Ejemplo: Si tu pintura es de 16:9 usa 16/9. Si es más cuadrada, usa 4/3 o lo que corresponda.
+    // Al forzar el aspect ratio, la imagen ocupará el 100% del ancho y crecerá hacia abajo perfectamente sin recortar nada.
+    aspectRatio: 16 / 9, 
+  },
   heroImage: {
     width: '100%',
     height: '100%',
+  },
+  heroImageDesktop: {
+    width: '100%',
+    height: '100%',
+    ...Platform.select({
+      web: {
+        // Evita que en monitores ultra-wide la imagen se corte por arriba
+        objectPosition: 'top center', 
+      }
+    })
   },
   gradientFade: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: 120, // Altura de la transición difuminada
+    height: 120,
     ...Platform.select({
       web: {
-        // En entorno web aplicamos un degradado CSS real hacia el crema exacto
         background: `linear-gradient(to bottom, rgba(247, 244, 239, 0) 0%, ${COLORS.bgCrema} 100%)`,
       },
       default: {
-        // Fallback para plataformas móviles si es necesario
         backgroundColor: 'rgba(247, 244, 239, 0.7)',
       },
     }),
@@ -122,7 +141,7 @@ const styles = StyleSheet.create({
     color: COLORS.negroSuave,
     textAlign: 'center',
     letterSpacing: 1,
-    fontStyle: 'italic', // Toque clásico y premium para el lugar
+    fontStyle: 'italic',
   },
   divider: {
     height: 1,

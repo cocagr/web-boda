@@ -16,6 +16,15 @@ export default function Itinerario() {
     <View style={styles.container}>
       <Text style={styles.mainTitle}>ITINERARIO</Text>
 
+      {/* NUEVO: Bloque del Mapa de la Hoja de Ruta */}
+      <View style={styles.mapContainer}>
+        <Image 
+          source={require('../assets/MapaItinerario.jpeg')} 
+          style={styles.mapImage} 
+          resizeMode="contain" 
+        />
+      </View>
+
       {/* BLOQUE 1: Texto - Imagen */}
       <View style={[styles.section, { flexDirection: isMobile ? 'column' : 'row' }]}>
         <View style={styles.textContainer}>
@@ -61,7 +70,28 @@ export default function Itinerario() {
 
 const styles = StyleSheet.create({
   container: { width: '100%', backgroundColor: COLORS.bgCremaAlt, paddingVertical: 80, paddingHorizontal: 24, alignItems: 'center' },
-  mainTitle: { fontFamily: FONTS.titulo, fontSize: 40, color: COLORS.negroSuave, marginBottom: 60, letterSpacing: 2 },
+  mainTitle: { fontFamily: FONTS.titulo, fontSize: 40, color: COLORS.negroSuave, marginBottom: 40, letterSpacing: 2 },
+  
+  // Estilos añadidos para el mapa
+  mapContainer: { 
+    width: '100%', 
+    maxWidth: 960, // Limita el ancho en pantallas grandes para que luzca estético
+    aspectRatio: 16 / 9, // Mantiene la proporción original del mapa
+    marginBottom: 60,
+    borderRadius: 12,
+    overflow: 'hidden',
+    // Opcional: una sombra muy sutil si se desea destacar del fondo crema
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  mapImage: { 
+    width: '100%', 
+    height: '100%' 
+  },
+
   section: { maxWidth: 1000, width: '100%', marginBottom: 60, alignItems: 'center', justifyContent: 'space-between' },
   textContainer: { flex: 1, padding: 20 },
   image: { width: '100%', maxWidth: 400, height: 300, borderRadius: 10 },
