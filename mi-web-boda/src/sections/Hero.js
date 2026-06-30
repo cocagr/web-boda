@@ -9,12 +9,13 @@ export default function Hero() {
 
   const isMobile = deviceType === 'mobile';
   const isTablet = deviceType === 'tablet';
+  const isDesktop = !isMobile && !isTablet;
 
-  // Ajustamos dinámicamente la altura del bloque de la pintura según la pantalla
+  // Ajustamos dinámicamente la altura del bloque según la pantalla
   const getIllustrationHeight = () => {
     if (isMobile) return height * 0.45;  // En móvil ocupa menos vertical para dejar espacio al texto
     if (isTablet) return height * 0.55;  // En tablet un tamaño intermedio
-    return height * 0.65;                // En escritorio luce en gran formato
+    return height * 0.70;                // En escritorio le damos un poco más de margen vertical
   };
 
   return (
@@ -25,7 +26,8 @@ export default function Hero() {
         <Image
           source={require('../assets/ilustracion-hero.jpg')}
           style={styles.heroImage}
-          resizeMode="cover"
+          // En móvil/tablet cubre el espacio; en escritorio se muestra COMPLETA sin recortes
+          resizeMode={isDesktop ? "contain" : "cover"}
         />
         {/* Efecto de degradado suave para fundirse con el fondo crema */}
         <View style={styles.gradientFade} />
@@ -85,7 +87,7 @@ const styles = StyleSheet.create({
     height: 120, // Altura de la transición difuminada
     ...Platform.select({
       web: {
-        // En entorno web aplicamos un degradadoCSS real hacia el crema exacto
+        // En entorno web aplicamos un degradado CSS real hacia el crema exacto
         background: `linear-gradient(to bottom, rgba(247, 244, 239, 0) 0%, ${COLORS.bgCrema} 100%)`,
       },
       default: {
