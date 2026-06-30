@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS, getDeviceType } from '../styles/theme';
 import CustomButton from '../components/CustomButton';
-import { supabase } from '../config/supabaseClient';
 
 export default function RSVPGeneral() {
   const { width } = useWindowDimensions();
@@ -12,34 +11,56 @@ export default function RSVPGeneral() {
   const [formData, setFormData] = useState({
     nombre: '', asistencia: null, menu: null, alergias: '',
     tieneAcompanante: null, nombreAcomp: '', menuAcomp: null, alergiasAcomp: '',
-    alojamiento: null, usaAutobus: null // Puede ser: null, 'ida', 'ambos', 'no'
+    alojamiento: null, usaAutobus: null
   });
 
   const [cargando, setCargando] = useState(false);
   const [enviado, setEnviado] = useState(false);
 
   const handleEnviar = async () => {
-    if (!formData.nombre.trim() || !formData.asistencia || !formData.alojamiento) {
-      alert('Por favor, rellena los campos obligatorios.');
+    // 1. Validamos lo básico: nombre y si ha elegido una opción de asistencia
+    if (!formData.nombre.trim() || !formData.asistencia) {
+      alert('Por favor, indica tu nombre y si podrás asistir.');
       return;
     }
-    setCargando(true);
-    try {
-      const { error } = await supabase.from('asistencias').insert([{
-        nombre: formData.nombre.trim(), asistencia: formData.asistencia,
-        menu_principal: formData.menu, alergias_principal: formData.alergias,
-        tiene_acompanante: formData.tieneAcompanante === 'si',
-        nombre_acompanante: formData.nombreAcomp, menu_acompanante: formData.menuAcomp,
-        alergias_acompanante: formData.alergiasAcomp,
-        alojamiento: formData.alojamiento,
-        usa_autobus: formData.alojamiento === 'otro' ? 'no' : formData.usaAutobus
-      }]);
-      if (error) throw error;
-      setEnviado(true);
-    } catch (e) { alert('Error al enviar.'); } finally { setCargando(false); }
+
+    // 2. Si marca que NO, permitimos el envío aunque no rellene menús ni alojamiento
+    if (formData.asistencia === 'no') {
+      enviarAFormspree();
+      return;
+    }
+
+    // 3. Si marca que SÍ, validamos que haya elegido alojamiento (y lo que necesites)
+    if (!formData.alojamiento) {
+      alert('Por favor, selecciona una opción de alojamiento.');
+      return;
+    }
+
+    enviarAFormspree();
   };
 
-  if (enviado) return <View style={styles.container}><Text style={styles.title}>¡MUCHAS GRACIAS!</Text></View>;
+  const enviarAFormspree = async () => {
+    setCargando(true);
+    try {
+      const response = await fetch("https://formspree.io/f/mrewayky", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify(formData) // Enviamos todo el objeto tal cual
+      });
+
+      if (response.ok) {
+        setEnviado(true);
+      } else {
+        throw new Error('Error en el envío');
+      }
+    } catch (e) { 
+      alert('Error al enviar el formulario.'); 
+    } finally { 
+      setCargando(false); 
+    }
+  };
+
+  if (enviado) return <View style={styles.container}><Text style={styles.title}>¡MUCHAS GRACIAS! Hemos recibido tu confirmación.</Text></View>;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -116,11 +137,7 @@ export default function RSVPGeneral() {
         )}
         
         {cargando ? <ActivityIndicator size="small" /> : <CustomButton title="Confirmar asistencia" onPress={handleEnviar} />}
-        
-        {/* Aviso de niños debajo del botón */}
-        <Text style={styles.avisoNinos}>
-          Debido a motivos logísticos no podemos extender esta invitación a los niños.
-        </Text>
+        <Text style={styles.avisoNinos}>Debido a motivos logísticos no podemos extender esta invitación a los niños.</Text>
       </View>
     </ScrollView>
   );
