@@ -11,30 +11,25 @@ export default function Hero() {
   const isTablet = deviceType === 'tablet';
   const isDesktop = !isMobile && !isTablet;
 
-  // Modificamos la altura solo para móviles y tablets.
-  // En escritorio devolvemos 'auto' para que mande el aspect ratio o el ancho total.
+  // Control estricto de la altura para garantizar que el texto siempre sea visible al entrar
   const getIllustrationHeight = () => {
     if (isMobile) return height * 0.45;
-    if (isTablet) return height * 0.55;
-    return 'auto'; 
+    if (isTablet) return height * 0.50;
+    return height * 0.55; // Reducimos a un 55% en escritorio para asegurar espacio al infoContainer
   };
 
   return (
     <View style={styles.container}>
       
-      {/* Contenedor de la pintura */}
-      <View style={[
-        styles.imageWrapper, 
-        { height: getIllustrationHeight() },
-        isDesktop && styles.imageWrapperDesktop // Aplicamos aspecto proporcional en escritorio
-      ]}>
+      {/* Contenedor de la pintura con su máscara difuminada inferior */}
+      <View style={[styles.imageWrapper, { height: getIllustrationHeight() }]}>
         <Image
           source={require('../assets/ilustracion-hero.jpg')}
+          // Usamos un estilo específico en escritorio para forzar el encuadre superior
           style={isDesktop ? styles.heroImageDesktop : styles.heroImage}
-          // En escritorio usamos "cover" porque el contenedor ya tiene la proporción exacta de la imagen
-          resizeMode={isDesktop ? "cover" : "cover"} 
+          resizeMode="cover" // Cover en todos para que rellene el ancho completo
         />
-        {/* Efecto de degradado suave */}
+        {/* Efecto de degradado suave para fundirse con el fondo crema */}
         <View style={styles.gradientFade} />
       </View>
 
@@ -62,7 +57,7 @@ export default function Hero() {
         </Text>
       </View>
 
-      {/* Línea divisoria */}
+      {/* Línea divisoria fina y sutil de diseño */}
       <View style={[styles.divider, { width: isMobile ? '80%' : '60%' }]} />
     </View>
   );
@@ -78,13 +73,7 @@ const styles = StyleSheet.create({
   imageWrapper: {
     width: '100%',
     position: 'relative',
-    overflow: 'hidden',
-  },
-  imageWrapperDesktop: {
-    // CAMBIA ESTO según la proporción real de tu pintura (Ancho / Alto).
-    // Ejemplo: Si tu pintura es de 16:9 usa 16/9. Si es más cuadrada, usa 4/3 o lo que corresponda.
-    // Al forzar el aspect ratio, la imagen ocupará el 100% del ancho y crecerá hacia abajo perfectamente sin recortar nada.
-    aspectRatio: 16 / 9, 
+    overflow: 'hidden', // Clave para que lo que sobre por abajo se recorte
   },
   heroImage: {
     width: '100%',
@@ -95,10 +84,11 @@ const styles = StyleSheet.create({
     height: '100%',
     ...Platform.select({
       web: {
-        // Evita que en monitores ultra-wide la imagen se corte por arriba
-        objectPosition: 'top center', 
-      }
-    })
+        // TRUCO CLAVE: Alinea la imagen arriba del todo en la web.
+        // Al estirarse al 100% del ancho, el recorte pasará automáticamente ABAJO.
+        objectPosition: 'top center',
+      },
+    }),
   },
   gradientFade: {
     position: 'absolute',
