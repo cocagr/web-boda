@@ -12,7 +12,7 @@ export default function RSVPGeneral() {
   const [formData, setFormData] = useState({
     nombre: '', asistencia: null, menu: null, alergias: '',
     tieneAcompanante: null, nombreAcomp: '', menuAcomp: null, alergiasAcomp: '',
-    alojamiento: null, usaAutobus: null
+    alojamiento: null, usaAutobus: null // Puede ser: null, 'ida', 'ambos', 'no'
   });
 
   const [cargando, setCargando] = useState(false);
@@ -32,7 +32,8 @@ export default function RSVPGeneral() {
         nombre_acompanante: formData.nombreAcomp, menu_acompanante: formData.menuAcomp,
         alergias_acompanante: formData.alergiasAcomp,
         alojamiento: formData.alojamiento,
-        usa_autobus: formData.alojamiento === 'otro' ? false : formData.usaAutobus === 'si'
+        // Almacena el tipo de trayecto seleccionado o false si no usa
+        usa_autobus: formData.alojamiento === 'otro' ? 'no' : formData.usaAutobus
       }]);
       if (error) throw error;
       setEnviado(true);
@@ -105,8 +106,9 @@ export default function RSVPGeneral() {
             {formData.alojamiento && formData.alojamiento !== 'otro' && (
                 <View>
                     <Text style={styles.label}>¿USARÁS EL AUTOBÚS?</Text>
-                    <View style={styles.optionsRow}>
-                        <TouchableOpacity onPress={() => setFormData({...formData, usaAutobus: 'si'})} style={[styles.optionButton, formData.usaAutobus === 'si' && styles.optionSelected]}><Text style={formData.usaAutobus === 'si' ? styles.optTextSel : styles.optText}>SÍ</Text></TouchableOpacity>
+                    <View style={[styles.optionsRow, isMobile && { flexDirection: 'column', gap: 8 }]}>
+                        <TouchableOpacity onPress={() => setFormData({...formData, usaAutobus: 'ida'})} style={[styles.optionButton, formData.usaAutobus === 'ida' && styles.optionSelected]}><Text style={formData.usaAutobus === 'ida' ? styles.optTextSel : styles.optText}>SÍ, SOLO IDA</Text></TouchableOpacity>
+                        <TouchableOpacity onPress={() => setFormData({...formData, usaAutobus: 'ambos'})} style={[styles.optionButton, formData.usaAutobus === 'ambos' && styles.optionSelected]}><Text style={formData.usaAutobus === 'ambos' ? styles.optTextSel : styles.optText}>SÍ, IDA Y VUELTA</Text></TouchableOpacity>
                         <TouchableOpacity onPress={() => setFormData({...formData, usaAutobus: 'no'})} style={[styles.optionButton, formData.usaAutobus === 'no' && styles.optionSelected]}><Text style={formData.usaAutobus === 'no' ? styles.optTextSel : styles.optText}>NO</Text></TouchableOpacity>
                     </View>
                 </View>
@@ -128,10 +130,10 @@ const styles = StyleSheet.create({
   label: { fontSize: 11, color: '#444', fontWeight: '600', marginBottom: 12, letterSpacing: 1.5 },
   input: { width: '100%', height: 50, borderWidth: 1, borderColor: '#DDD', borderRadius: 2, paddingHorizontal: 15, marginBottom: 25, backgroundColor: '#FFF' },
   optionsRow: { flexDirection: 'row', gap: 10, marginBottom: 25 },
-  optionButton: { flex: 1, paddingVertical: 15, borderWidth: 1, borderColor: '#DDD', alignItems: 'center', borderRadius: 2 },
+  optionButton: { flex: 1, paddingVertical: 15, borderWidth: 1, borderColor: '#DDD', alignItems: 'center', borderRadius: 2, minHeight: 48, justifyContent: 'center' },
   optionSelected: { borderColor: COLORS.verdeOlivo, backgroundColor: '#FDFDFC' },
-  optText: { fontSize: 13, color: '#888' },
-  optTextSel: { fontSize: 13, color: COLORS.verdeOlivo, fontWeight: '600' },
+  optText: { fontSize: 13, color: '#888', textAlign: 'center' },
+  optTextSel: { fontSize: 13, color: COLORS.verdeOlivo, fontWeight: '600', textAlign: 'center' },
   infoAlojamiento: { marginVertical: 20, padding: 15, backgroundColor: '#F9F9F9', borderRadius: 2, borderWidth: 1, borderColor: '#EEE' },
   infoText: { fontSize: 13, color: '#666', marginBottom: 8, lineHeight: 20 },
   hotelText: { fontSize: 13, fontWeight: '600', color: COLORS.verdeOlivo, marginBottom: 5 }
