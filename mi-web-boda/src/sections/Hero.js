@@ -29,7 +29,7 @@ export default function Hero() {
         isDesktop && styles.imageWrapperDesktop // Aplicamos aspecto proporcional en escritorio
       ]}>
         <Image
-          source={require('../assets/Imagen 1.jpg')}
+          source={require('../assets/ilustracion-hero.jpg')}
           style={isDesktop ? styles.heroImageDesktop : styles.heroImage}
           // En escritorio usamos "cover" porque el contenedor ya tiene la proporción exacta de la imagen
           resizeMode={isDesktop ? "cover" : "cover"} 
